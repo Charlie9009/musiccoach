@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Musiccoach</title>
+</head>
+<body>
+    <h1>Your Exercises (Last Week)</h1>
+
+    <p><strong>Total practice:</strong> {{ total_time }} minutes</p>
+
+    <ul>
+        {% for exercise in exercises %}
+            <li>
+                {{ exercise.date }} – {{ exercise.get_type_display }}:
+                {{ exercise.time }} min
+                {% if exercise.notes %}
+                    <br><em>Notes:</em> {{ exercise.notes }}
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No Exercises Registered.</li>
+        {% endfor %}
+    </ul>
+
+    <p><a href="{% url 'create_exercise' %}">➕ Add New Exercise</a></p>
+</body>
+</html>
