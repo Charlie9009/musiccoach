@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Musiccoach</title>
-</head>
-<body>
+{% extends "exercises/base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
     <h1>Your Exercises (Last Week)</h1>
 
     <p><strong>Total practice:</strong> {{ total_time }} minutes</p>
@@ -23,5 +22,5 @@
     </ul>
 
     <p><a href="{% url 'create_exercise' %}">➕ Add New Exercise</a></p>
-</body>
-</html>
+{% endblock %}
+
