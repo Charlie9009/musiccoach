@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Exercise</title>
-</head>
-<body>
-    <h1>Add New Exercise</h1>
+{% extends "exercises/base.html" %}
+{% block title %}Add Exercise - Music Coach{% endblock %}
 
-    <form method="post">
+{% block content %}
+    <h1 class="mb-4">Add New Exercise</h1>
+
+    <form method="post" class="card p-4 shadow-sm">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save</button>
+        <button type="submit" class="btn btn-success m-5">Save Exercise</button>
+        <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
     </form>
-
-    <p><a href="{% url 'index' %}">⬅ Back To Exercises</a></p>
-</body>
-</html>
+{% endblock %}
