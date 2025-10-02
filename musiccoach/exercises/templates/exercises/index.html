@@ -1,26 +1,41 @@
 {% extends "exercises/base.html" %}
-{% load static %}
-{% block title %}Home{% endblock %}
+{% block title %}Home - Music Coach{% endblock %}
 
 {% block content %}
-    <h1>Your Exercises (Last Week)</h1>
+<h1 class="mb-4">Your Exercises (Last Week)</h1>
 
-    <p><strong>Total practice:</strong> {{ total_time }} minutes</p>
+<div class="alert alert-info">
+    <strong>Total practice:</strong> {{ total_time }} minutes
+</div>
 
-    <ul>
-        {% for exercise in exercises %}
-            <li>
-                {{ exercise.date }} – {{ exercise.get_type_display }}:
-                {{ exercise.time }} min
-                {% if exercise.notes %}
-                    <br><em>Notes:</em> {{ exercise.notes }}
-                {% endif %}
-            </li>
-        {% empty %}
-            <li>No Exercises Registered.</li>
-        {% endfor %}
-    </ul>
+<ul class="list-group mb-4">
+    {% for exercise in exercises %}
+        <li class="list-group-item">
+            <strong>{{ exercise.get_type_display }}</strong> —
+            {{ exercise.time }} min on {{ exercise.date }}
+            {% if exercise.notes %}
+                <p class="mb-0"><em>Notes:</em> {{ exercise.notes }}</p>
+            {% endif %}
+        </li>
+    {% empty %}
+        <li class="list-group-item">No exercises registered yet.</li>
+    {% endfor %}
+</ul>
 
-    <p><a href="{% url 'create_exercise' %}">➕ Add New Exercise</a></p>
+<!-- Chart Section -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Weekly Practice Chart</h5>
+
+        <!-- Canvas for Chart.js -->
+        <canvas id="practiceChart"></canvas>
+
+        <!-- Safe JSON data for JS -->
+        {{ chart_labels|json_script:"chart-labels" }}
+        {{ chart_data|json_script:"chart-data" }}
+    </div>
+</div>
+
+<a href="{% url 'create_exercise' %}" class="btn btn-primary">➕ Add New Exercise</a>
+
 {% endblock %}
-
