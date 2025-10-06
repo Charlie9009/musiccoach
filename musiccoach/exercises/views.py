@@ -8,21 +8,29 @@ from django.utils import timezone
 
 
 def index(request):
-    today = date.today()
-    latest_week = today - timedelta(days=7)
-    exercises = Exercise.objects.filter(date__gte=latest_week).order_by('date')
+    today = timezone.now().date()
+    latest_week = [
+            today - timedelta(days=i) for i in range(6, -1, -1)
+        ]  # last 7 days
 
-    # group minutes by date
-    chart_labels = [ex.date.strftime("%a") for ex in exercises]
-    chart_data = [ex.time for ex in exercises]
+    # Create a dict with total time per day
+    data = []
+    for day in latest_week:
+        total = Exercise.objects.filter(
+                date=day
+            ).aggregate(Sum('time'))['time__sum'] or 0
+        data.append({"date": day.strftime("%a"), "time": total})
 
-    total_time = sum(chart_data)
+    exercises = Exercise.objects.filter(
+            date__gte=latest_week[0]
+        ).order_by('-date')
+    total_time = sum([o.time for o in exercises])
 
-    return render(request, "exercises/index.html", {
-        "exercises": exercises,
-        "total_time": total_time,
-        "chart_labels": chart_labels,
-        "chart_data": chart_data,
+    return render(request, 'exercises/index.html', {
+        'exercises': exercises,
+        'total_time': total_time,
+        'chart_labels': [d["date"] for d in data],
+        'chart_data': [d["time"] for d in data],
     })
 
 
