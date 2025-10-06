@@ -1,13 +1,22 @@
 {% extends "exercises/base.html" %}
-{% block title %}Add Exercise - Music Coach{% endblock %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <h1 class="mb-4">Add New Exercise</h1>
-
-    <form method="post" class="card p-4 shadow-sm">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-success m-5">Save Exercise</button>
-        <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
-    </form>
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">🎵 Create New Exercise</h4>
+        </div>
+        <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-success me-2">💾 Save Exercise</button>
+                    <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
