@@ -1,6 +1,5 @@
 from django.db import models
-
-# Create your models here.
+from userprofile.models import UserProfile
 
 
 class Exercise(models.Model):
@@ -12,6 +11,10 @@ class Exercise(models.Model):
         ('OTHE', 'Other'),
     ]
 
+    user_profile = models.ForeignKey(
+        "userprofile.UserProfile",
+        on_delete=models.CASCADE
+    )
     date = models.DateField(auto_now_add=True)
     type = models.CharField(max_length=4, choices=EXERCISE_TYPE)
     description = models.TextField()
